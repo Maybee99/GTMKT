@@ -55,7 +55,6 @@ class Edu_dataset(InMemoryDataset):
     def process(self):
         # 写入保存数据的方法函数
         data_list = []  # Read data into huge `Data` list.
-        # data = Dataset_load(dataset=data_name)
         # junyi教育数据集加载
         junyi_exercise = pd.read_csv("./Data_Edu/raw/junyi/junyi_Exercise_table.csv", encoding="utf-8",
                                      low_memory=False)
