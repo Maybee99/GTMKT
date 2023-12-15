@@ -94,7 +94,6 @@ class Edu_dataset(InMemoryDataset):
         # 构造图数据
         for user_id, group in tqdm(grouped):
             # print("user_id: ", user_id)
-            # print(group)
 
             exercise_info_list = group.to_dict(orient='records')
 
