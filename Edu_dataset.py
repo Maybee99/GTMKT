@@ -35,9 +35,9 @@ def Dataset_load(dataset):
 data_name = "junyi"
 
 
-class Edu_dataset(InMemoryDataset):
+class Edu_dataset_junyi(InMemoryDataset):
     def __init__(self, root, transform=None, pre_transform=None):
-        super(Edu_dataset, self).__init__(root, transform, pre_transform)  # transform就是数据增强，对每一个数据都执行
+        super(Edu_dataset_junyi, self).__init__(root, transform, pre_transform)  # transform就是数据增强，对每一个数据都执行
         self.data, self.slices = torch.load(self.processed_paths[0])
 
     @property

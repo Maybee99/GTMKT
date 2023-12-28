@@ -15,11 +15,11 @@ class GTMKT(nn.Module):
         self.transformer = Transformer(depth=8, heads=8, dim=embedding_dim)
         self.class_token = nn.Embedding(1, embedding_dim)
         self.input_layer = nn.LazyLinear(embedding_dim)
+        self.convs = convs
         self.conv1 = GATConv(embedding_dim, embedding_dim)
         self.conv2 = GATConv(embedding_dim, embedding_dim)
         self.node_embedding_layer = nn.Embedding(1, embedding_dim)
         self.to_class = nn.LazyLinear(num_clases)
-        self.convs = convs
 
     # This is the neighbour splitting function
     def generate_clusters(self, num_nodes, adj):

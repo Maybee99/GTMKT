@@ -2,7 +2,7 @@ import argparse
 import torch
 import time
 import torch_geometric
-from Edu_dataset import Edu_dataset
+from Edu_dataset import Edu_dataset_junyi
 from utils import *
 from tqdm import tqdm
 import os
@@ -55,7 +55,7 @@ def main(args):
     os.mkdir(out_folder)
 
     # Load dataset and print stats about it
-    dataset = Edu_dataset(root="Data_Edu/")
+    dataset = Edu_dataset_junyi(root="Data_Edu/")
 
     print("dataset: ", dataset.data)
     # print("slices:", dataset.slices)
