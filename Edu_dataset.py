@@ -139,7 +139,6 @@ class Edu_dataset_junyi(InMemoryDataset):
                                               float(rela_exercise["Prerequisite_avg"])])
 
                     # ----------------------------------------------图数据
-                    # edge_index
                     edge_index = torch.tensor([source_nodes, target_nodes], dtype=torch.long)
                     # X
                     X = torch.tensor(node_features, dtype=torch.float)
