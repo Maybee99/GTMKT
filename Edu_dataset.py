@@ -33,7 +33,7 @@ def Dataset_load(dataset):
 
 # junyi教育数据集
 data_name = "junyi"
-# Dataset_load("junyi")
+# Dataset_load(data_name)
 
 
 class Edu_dataset_junyi(InMemoryDataset):
