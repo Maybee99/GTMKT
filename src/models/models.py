@@ -2,7 +2,7 @@ import torch
 from torch import nn
 import random
 import numpy as np
-from GTMKT.models.modules import *
+from src.models.modules import *
 from torch_geometric.nn import GATConv
 
 

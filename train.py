@@ -9,7 +9,7 @@ import os
 from sklearn.model_selection import StratifiedKFold
 import pandas as pd
 import torch_geometric.utils
-from GTMKT.models.models import *
+from src.models.models import *
 import torch_geometric
 import torch_geometric.transforms
 from torch_geometric.datasets import TUDataset

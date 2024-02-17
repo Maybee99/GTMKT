@@ -1,4 +1,4 @@
-from GTMKT.models.models import *
+from src.models.models import *
 
 
 def get_optimizer(args,model):
