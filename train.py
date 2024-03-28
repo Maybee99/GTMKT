@@ -16,6 +16,7 @@ from torch_geometric.datasets import TUDataset
 import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 from itertools import groupby
+from sklearn.metrics import roc_auc_score, mean_squared_error
 
 
 def evaluate(model, dataset2, loader, loss):
@@ -28,16 +29,12 @@ def evaluate(model, dataset2, loader, loss):
     for idx in loader:
         x, adj = dataset2[idx]
         label = x.y
-        # print("x: ", x)
-        # print("adj: ", adj)
         if not adj:
             continue
         y = model(x, adj)
 
         predictions = y.argmax(dim=1, keepdim=True).squeeze()
         num_correct += (predictions == label.view(-1)).sum().item()
-        # print("y: ", y)
-        # print("label.view(-1): ", label.view(-1).long())
         total_loss += loss(y, label.view(-1).long()).item() * len(y)
         num_items += len(y)
         y_true.append(label)
@@ -78,7 +75,6 @@ def main(args):
 
     # Iterate over all K-folds
     for train_idx, test_idx in skf.split(range(len(dataset)), [i.y.item() for i in dataset]):
-
         test_accs.append([])
         train_loader = DataLoader(list(train_idx), batch_size=args.batch_size, shuffle=True)
         test_loader = DataLoader(list(test_idx), batch_size=args.batch_size)
@@ -108,15 +104,11 @@ def main(args):
                     if not adj:
                         continue
                     label = x.y
-
                     optimizer.zero_grad()
-                    # print("x:", x.edge_attr)
                     y = model(x, adj)
 
                     num_items += len(y)
                     predictions = y.argmax(dim=1, keepdim=True).squeeze()
-                    # print("y: ", y)
-                    # print("label.view(-1): ", label.view(-1))
                     loss = loss_func(y, label.view(-1).long())
                     loss.backward()
                     correct = (predictions == label.view(-1)).sum().item()
@@ -172,7 +164,7 @@ if __name__ == '__main__':
     parser.add_argument('--lr', type=float, default=0.0003)
     parser.add_argument('--weight_decay', type=float, default=0)
     parser.add_argument('--epochs', type=int, default=40)
-    parser.add_argument('--num_splits', type=int, default=2)
+    parser.add_argument('--num_splits', type=int, default=4)
     parser.add_argument('--embedding_dim', type=int, default=64)
     parser.add_argument('--batch_size', type=int, default=1)
     parser.add_argument('--output_folder', type=str, default="figs/")

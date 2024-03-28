@@ -33,6 +33,8 @@ def Dataset_load(dataset):
 
 # junyi教育数据集
 data_name = "junyi"
+
+
 # Dataset_load(data_name)
 
 
@@ -87,18 +89,21 @@ class Edu_dataset_junyi(InMemoryDataset):
         构建图数据集
         """
         # 按照学生user_id分类
-        sampled_user_id = np.random.choice(merged_df["user_id"].unique(), 1000, replace=False)
+        sampled_user_id = np.random.choice(merged_df["user_id"].unique(), 100, replace=False)
         merged_df = merged_df.loc[merged_df["user_id"].isin(sampled_user_id)]
         grouped = merged_df.groupby("user_id")
         # print("grouped_len:", len(grouped))
 
         # 构造图数据
         for user_id, group in tqdm(grouped):
-            # print("user_id: ", user_id)
-
             exercise_info_list = group.to_dict(orient='records')
+            exercise_info_list = sorted(exercise_info_list, key=lambda x: int(x['time_done']))
+            history_list = []
 
             for exercise_info in exercise_info_list:
+                history_list.append(exercise_info["exercise"])
+                if len(history_list) < 4:
+                    history_list.extend([0] * (4 - len(history_list)))
                 # 节点特征
                 node_features = []
                 # 边信息
@@ -112,12 +117,11 @@ class Edu_dataset_junyi(InMemoryDataset):
                 # 一级节点 学生-练习：1-1
                 source_nodes.append(0)
                 target_nodes.append(1)
+                # print("history_list:", history_list[-4:])
                 node_features.append(
-                    [exercise_info["user_id"], exercise_info["count_attempts"], float(exercise_info["count_hints"]),
-                     float(exercise_info["points_earned"])])  # 学生节点的特征
+                    history_list[-4:])  # 学生节点的特征
                 node_features.append([exercise_info["exercise"], exercise_info["prerequisites"], exercise_info["topic"],
                                       exercise_info["area"]])  # 练习节点的特征
-                # print("node_features:", node_features)
 
                 # 二级节点
                 exercise_id = exercise_info["exercise"]
@@ -142,6 +146,7 @@ class Edu_dataset_junyi(InMemoryDataset):
                     # ----------------------------------------------图数据
                     edge_index = torch.tensor([source_nodes, target_nodes], dtype=torch.long)
                     # X
+                    # print("node_features:", node_features)
                     X = torch.tensor(node_features, dtype=torch.float)
                     # y
                     y = torch.FloatTensor([correct])
@@ -176,4 +181,3 @@ class Edu_dataset_junyi(InMemoryDataset):
 
                     data, slices = self.collate(data_list)
                     torch.save((data, slices), self.processed_paths[0])
-
