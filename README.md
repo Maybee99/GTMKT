@@ -1,2 +1,2 @@
 # GTMKT
-GCN-Transformer Memory Networks for Forgetting Knowledge Tracing
+GAT-Transformer Memory Networks for Forgetting Knowledge Tracing
