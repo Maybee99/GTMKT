@@ -40,8 +40,8 @@ def evaluate(model, dataset2, loader, loss):
         y_true.append(label)
         y_pred.append(predictions)
 
-    y_true = torch.cat((y_true)).view(-1, 1)
-    y_pred = torch.stack((y_pred)).view(-1, 1)
+    y_true = torch.cat(y_true).view(-1, 1)
+    y_pred = torch.stack(y_pred).view(-1, 1)
     return ((y_pred == y_true).sum() / len(y_pred)).item(), total_loss / num_items
 
 
@@ -58,6 +58,7 @@ def main(args):
     # print("slices:", dataset.slices)
     print("图的数量: ", len(dataset))
     print("类别数量: ", dataset.num_classes)
+    graph_class_num(dataset)
     print("Average number of nodes: ", sum([graph.num_nodes for graph in dataset]) / len(dataset))
     print("Data Imbalance: ", (sum(dataset.data.y) * 1. / len(dataset)).item())
 
@@ -132,16 +133,16 @@ def main(args):
                                                   "Testing loss": test_loss}, ignore_index=True)
 
                 # Create accuracy and loss plots
-                ax = train_infos[['Training accuracy', 'Testing accuracy']].plot(xlim=[0, args.epochs - 1], ylim=[0, 1])
+                ax = train_infos[['Training accuracy', 'Testing accuracy']].plot(xlim=[0, args.epochs - 1], ylim=[0.6, 1])
                 plt.xlabel('Epoch')
                 plt.ylabel('Accuracy')
-                ax.get_figure().savefig(out_folder + "Accuracy.png")
+                ax.get_figure().savefig(out_folder + "Accuracy.jpg", dpi=1500)
                 plt.close()
 
                 ax = train_infos[['Training loss', 'Testing loss']].plot(xlim=[0, args.epochs - 1])
                 plt.xlabel('Epoch')
                 plt.ylabel('Loss')
-                ax.get_figure().savefig(out_folder + "Loss.png")
+                ax.get_figure().savefig(out_folder + "Loss.jpg", dpi=1500)
                 plt.close()
 
                 train_infos.to_csv(out_folder + "train_infos.csv")
@@ -161,10 +162,10 @@ if __name__ == '__main__':
     parser.add_argument('--dataset', type=str, default='junyi')
     parser.add_argument('--optimizer', type=str, default='adam', help="Options are: adam, sgd")
     parser.add_argument('--loss', type=str, default='crossentropyloss', help="Options are: crossentropyloss")
-    parser.add_argument('--lr', type=float, default=0.0003)
+    parser.add_argument('--lr', type=float, default=0.005)
     parser.add_argument('--weight_decay', type=float, default=0)
-    parser.add_argument('--epochs', type=int, default=40)
-    parser.add_argument('--num_splits', type=int, default=4)
+    parser.add_argument('--epochs', type=int, default=20)
+    parser.add_argument('--num_splits', type=int, default=3)
     parser.add_argument('--embedding_dim', type=int, default=64)
     parser.add_argument('--batch_size', type=int, default=1)
     parser.add_argument('--output_folder', type=str, default="figs/")

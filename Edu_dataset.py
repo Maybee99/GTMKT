@@ -1,3 +1,5 @@
+from collections import Counter
+
 import EduData
 import pandas as pd
 import os
@@ -89,7 +91,7 @@ class Edu_dataset_junyi(InMemoryDataset):
         构建图数据集
         """
         # 按照学生user_id分类
-        sampled_user_id = np.random.choice(merged_df["user_id"].unique(), 100, replace=False)
+        sampled_user_id = np.random.choice(merged_df["user_id"].unique(), 500, replace=False)
         merged_df = merged_df.loc[merged_df["user_id"].isin(sampled_user_id)]
         grouped = merged_df.groupby("user_id")
         # print("grouped_len:", len(grouped))
@@ -102,8 +104,13 @@ class Edu_dataset_junyi(InMemoryDataset):
 
             for exercise_info in exercise_info_list:
                 history_list.append(exercise_info["exercise"])
-                if len(history_list) < 4:
-                    history_list.extend([0] * (4 - len(history_list)))
+                counter = Counter(history_list)
+                history_4 = counter.most_common(4)
+                history_most_counter = [value for value, count in history_4]
+
+                if len(history_most_counter) < 4:
+                    history_most_counter.extend([0] * (4 - len(history_most_counter)))
+
                 # 节点特征
                 node_features = []
                 # 边信息
@@ -119,13 +126,12 @@ class Edu_dataset_junyi(InMemoryDataset):
                 target_nodes.append(1)
                 # print("history_list:", history_list[-4:])
                 node_features.append(
-                    history_list[-4:])  # 学生节点的特征
+                    history_most_counter[-4:])  # 学生Memory节点的特征
                 node_features.append([exercise_info["exercise"], exercise_info["prerequisites"], exercise_info["topic"],
                                       exercise_info["area"]])  # 练习节点的特征
 
                 # 二级节点
                 exercise_id = exercise_info["exercise"]
-                # print("exercise_id:", exercise_id)
                 relationship_exercise_info = relationship_exercise[relationship_exercise["Exercise_A"] == exercise_id]
                 relationship_exercise_info = relationship_exercise_info.to_dict(orient='records')
 
@@ -162,22 +168,4 @@ class Edu_dataset_junyi(InMemoryDataset):
                     data, slices = self.collate(data_list)
                     torch.save((data, slices), self.processed_paths[0])
                 else:
-                    # ----------------------------------------------图数据
-                    # edge_index
-                    edge_index = torch.tensor([source_nodes, target_nodes], dtype=torch.long)
-                    # X
-                    X = torch.tensor(node_features, dtype=torch.float)
-                    # y
-                    y = torch.FloatTensor([correct])
-                    # 图数据
-                    data = Data(x=X, edge_index=edge_index, y=y)
-                    # print("data:", data)
-                    if self.pre_filter is not None:
-                        data_list = [data for data in data_list if self.pre_filter(data)]
-                    if self.pre_transform is not None:
-                        data_list = [self.pre_transform(data) for data in data_list]
-
-                    data_list.append(data)
-
-                    data, slices = self.collate(data_list)
-                    torch.save((data, slices), self.processed_paths[0])
+                    continue

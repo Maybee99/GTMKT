@@ -24,3 +24,13 @@ def get_model(args, embedding_dim, num_clases):
         return GTMKT(embedding_dim, num_clases, convs=True)
     if args.model == "GraphFormerNoConvs":
         return GTMKT(embedding_dim, num_clases, convs=False)
+
+
+def graph_class_num(dataset):
+    class_counts = torch.zeros(dataset.num_classes, dtype=torch.long)
+    for label in range(dataset.num_classes):
+        class_counts[label] = torch.sum(dataset.y == label)
+
+    print("每个类别的图的数量:")
+    for label in range(dataset.num_classes):
+        print(f"类别 {label}: {class_counts[label]}")
