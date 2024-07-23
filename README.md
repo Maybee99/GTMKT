@@ -16,7 +16,7 @@ GAT-Transformer Memory Networks for Forgetting Knowledge Tracing
 ```bash
 git clone https://github.com/Maybee99/GTMKT.git
 cd GTMKT
-pip instll -r requirements
+pip3 instll -r requirements
 ```
 
 ```
