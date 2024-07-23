@@ -19,6 +19,9 @@ cd GTMKT
 pip instll -r requirements
 ```
 
+```
+pip3 install torch==1.9.1 torch_geometric==2.0.1 torch_sparse==0.6.12 torch_scatter==2.0.9
+```
 ## Usage
 
 ### Train
