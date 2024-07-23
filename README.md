@@ -5,14 +5,32 @@ GAT-Transformer Memory Networks for Forgetting Knowledge Tracing
 ![图片](./GTMKT/GTMKT.png)
 
 ## Dataset
+[Junyi](https://pslcdatashop.web.cmu.edu/DatasetInfo?datasetId=1198)
 
-## Setup
+[Assist09](https://sites.google.com/site/assistmentsdata/home/2009-2010-assistment-data)
 
-To run this code you need the following:
+[Static2011](https://pslcdatashop.web.cmu.edu/DatasetInfo?datasetId=507)
 
-    a machine with GPUs
-    python3
-    numpy, pandas, scipy, scikit-learn and torch packages:
+## Installation
+
+```bash
+git clone https://github.com/Maybee99/GTMKT.git
+cd GTMKT
+pip instll -r requirements
 ```
-pip3 install torch==1.7.0 numpy==1.21.2 pandas==1.4.1 scipy==1.7.3 scikit-learn==1.0.2 tqdm==4.26.3 
+
+## Usage
+
+### Train
+
+Train DTransformer with CL loss:
+
+```bash
+python3 ./train.py -m GTMKT -d [junyi, assist09,,statics] -bs 1 -e 20 -lr 0.003
+```
+
+For more options, run:
+
+```bash
+python3 ./train.py -h
 ```
