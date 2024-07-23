@@ -2,7 +2,7 @@
 GAT-Transformer Memory Networks for Forgetting Knowledge Tracing
 
 ## Overall Architecture
-![图片](https://user-images.githubusercontent.com/77867386/165916825-9c2135cc-d83b-43b4-82bb-c059a49af7e1.png)
+![图片](./GTMKT/GTMKT.png)
 
 ## Dataset
 
