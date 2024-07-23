@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 from itertools import groupby
 from sklearn.metrics import roc_auc_score, mean_squared_error
+import seaborn as sns
 
 
 def evaluate(model, dataset2, loader, loss):
@@ -107,7 +108,6 @@ def main(args):
                     label = x.y
                     optimizer.zero_grad()
                     y = model(x, adj)
-
                     num_items += len(y)
                     predictions = y.argmax(dim=1, keepdim=True).squeeze()
                     loss = loss_func(y, label.view(-1).long())
@@ -133,7 +133,8 @@ def main(args):
                                                   "Testing loss": test_loss}, ignore_index=True)
 
                 # Create accuracy and loss plots
-                ax = train_infos[['Training accuracy', 'Testing accuracy']].plot(xlim=[0, args.epochs - 1], ylim=[0.6, 1])
+                ax = train_infos[['Training accuracy', 'Testing accuracy']].plot(xlim=[0, args.epochs - 1],
+                                                                                 ylim=[0.7, 0.9])
                 plt.xlabel('Epoch')
                 plt.ylabel('Accuracy')
                 ax.get_figure().savefig(out_folder + "Accuracy.jpg", dpi=1500)
@@ -158,16 +159,16 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--verbose', type=int, default=1, help="Options are: 0, 1")
-    parser.add_argument('--model', type=str, default='GTMKT')
-    parser.add_argument('--dataset', type=str, default='junyi')
+    parser.add_argument("-m", '--model', type=str, default='GTMKT')
+    parser.add_argument("-d", '--dataset', type=str, default='junyi')
     parser.add_argument('--optimizer', type=str, default='adam', help="Options are: adam, sgd")
     parser.add_argument('--loss', type=str, default='crossentropyloss', help="Options are: crossentropyloss")
-    parser.add_argument('--lr', type=float, default=0.005)
+    parser.add_argument("-lr", '--lr', type=float, default=0.003)
     parser.add_argument('--weight_decay', type=float, default=0)
-    parser.add_argument('--epochs', type=int, default=20)
+    parser.add_argument("-e", '--epochs', type=int, default=20)
     parser.add_argument('--num_splits', type=int, default=3)
-    parser.add_argument('--embedding_dim', type=int, default=64)
-    parser.add_argument('--batch_size', type=int, default=1)
+    parser.add_argument('--embedding_dim', type=int, default=32)  # 模型的嵌入维度
+    parser.add_argument("-bs", '--batch_size', type=int, default=1)
     parser.add_argument('--output_folder', type=str, default="figs/")
     parser.add_argument('--experiment_id', type=str, default=str(time.time()))
 
