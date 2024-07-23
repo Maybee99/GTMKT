@@ -1,15 +1,12 @@
-# DGEKT
-The implementation of the paper *DGEKT: A Dual Graph Ensemble Learning Method for Knowlegde Tracing.*
-
-## Abstract
-Knowledge tracing, which aims to trace students’ evolving knowledge states based on their exercise-answering sequences, plays a critical role in supporting intelligent educational services. Recently, some graph-based models have been developed to incorporate the relationships between exercises to improve knowledge tracing. Despite the encouraging progress, only a single type of relationship information is generally explored. This paper presents a novel dual graph ensemble learning method for Knowledge Tracing (DGEKT), which establishes a dual graph structure of students’ learning interac tions to capture the heterogeneous exercise-concept associations and interaction transitions by hypergraph and directed graph modeling. Moreover, online knowledge distillation is introduced to form an ensemble teacher model from the dual graph models. In this way, besides the reference to students’ responses to a single exercise at the next step, the ensemble teacher model provides its predictions on all exercises as extra supervision for better modeling ability. In the experiments, we compare DGEKT against eight knowledge tracing baselines on three benchmark datasets, and the results demonstrate that DGEKT achieves state-of-the-art performance.
+# GTMKT
+GAT-Transformer Memory Networks for Forgetting Knowledge Tracing
 
 ## Overall Architecture
 ![图片](https://user-images.githubusercontent.com/77867386/165916825-9c2135cc-d83b-43b4-82bb-c059a49af7e1.png)
 
 ## Dataset
 We evaluate our method on three benchmark datasets for knowledge tracing, i.e., ASSIST09, ASSIST17, and EdNet.
-In addition to the ASSIST17 dataset provided in the code, the ASSIST09 and EdNet datasets which mentioned in the paper are in the Google Drive, which you can download with this [link](https://drive.google.com/file/d/1ItqFv0fH6ibTotmflFNeAX0d7PdMaF7B/view?usp=sharing).
+In addition to the ASSIST17 dataset provided in the code, the ASSIST09 and EdNet datasets which mentioned in the paper are in the Google Drive, which you can download with this [link](https://drive.google.com/file/d/1ItqFv0fH6ibTotmflFNeAX0d7PdMaF7B/view?usp=sharing](https://edudata.readthedocs.io/en/latest/).
 ### Try using your own dataset!
 
 You can also use your own data set, but note that besides the four row data set, you also need to build the incidence matrix of question and concept of the dataset and put it in the `/Dataset/H` folder.
