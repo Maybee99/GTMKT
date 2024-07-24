@@ -26,7 +26,7 @@ pip3 install torch==1.9.1 torch_geometric==2.0.1 torch_sparse==0.6.12 torch_scat
 
 ### Train
 
-Train DTransformer with CL loss:
+Train GTMKT with CL loss:
 
 ```bash
 python3 ./train.py -m GTMKT -d [junyi, assist09,,statics] -bs 1 -e 20 -lr 0.003
